@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { Box, Container, List, ListItem } from "@chakra-ui/react";
+import { SearchProvider, useSearch } from "./contexts/searchContext";
+import { InputFormSearch } from "./components/input";
+import data from "./data.json";
+
+const ListDataSearch = () => {
+  const { search } = useSearch();
+
+  const listItems = data
+    .filter((item) => item.title.includes(search))
+    .map((item) => (
+      <ListItem borderWidth={1} p={2} mb={2} key={item.id}>
+        {item.title}
+      </ListItem>
+    ));
+
+  return <List>{listItems}</List>;
+};
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <SearchProvider>
+      <Container>
+        <Box w={300} borderWidth={1} p={2} borderRadius={10}>
+          <InputFormSearch />
+        </Box>
+
+        <Box mt={5} w={300}>
+          <ListDataSearch />
+        </Box>
+
+        <Box mt={5}></Box>
+      </Container>
+    </SearchProvider>
   );
 }
 
